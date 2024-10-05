@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Upload Files') {
+            steps {
+                script {
+                    // Define the source directory and target FTP server details
+                    def sourceDir = 'path/to/your/files' // Update this path
+                    def ftpServer = 'ftp://your-ftp-server' // Update this URL
+                    def username = 'your-username' // FTP Username
+                    def password = 'your-password' // FTP Password
+
+                    // Upload files using curl or any preferred method
+                    sh """
+                    curl -T ${sourceDir}/* ${ftpServer} --user ${username}:${password}
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Files uploaded successfully!'
+        }
+        failure {
+            echo 'File upload failed.'
+        }
+    }
+}
